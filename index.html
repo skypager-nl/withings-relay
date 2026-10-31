@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>Withings Relay</title>
+<style>
+  :root { --bg: #fafafa; --fg: #1c1c1c; --muted: #666; --link: #0277bd; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #111; --fg: #e6e6e6; --muted: #9a9a9a; --link: #4fc3f7; } }
+  body { margin: 0; padding: 32px 16px; background: var(--bg); color: var(--fg);
+         font: 16px/1.5 system-ui, -apple-system, sans-serif; text-align: center; }
+  p { max-width: 480px; margin: 0 auto 12px; }
+  .muted { color: var(--muted); font-size: 14px; }
+  a { color: var(--link); }
+</style>
+</head>
+<body>
+<!-- Withings only returns to public HTTPS addresses. This page forwards the one-time login code to
+     the Withings Sync app on the home network, which exchanges it right away. Nothing is stored here. -->
+<p id="msg">Sending you back to Home Assistant&hellip;</p>
+<p class="muted" id="help" hidden>If nothing happens, <a id="go">continue to Home Assistant</a>.
+  This only works on a device connected to your home network.</p>
+<script>
+  var target = "http://homeassistant.local:8099/callback" + location.search;
+  if (new URLSearchParams(location.search).has("code")) {
+    document.getElementById("go").setAttribute("href", target);
+    document.getElementById("help").hidden = false;
+    location.replace(target);
+  } else {
+    document.getElementById("msg").textContent = "Nothing to forward. Start from Withings Sync in Home Assistant.";
+  }
+</script>
+</body>
+</html>
